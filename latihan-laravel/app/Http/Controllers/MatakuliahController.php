@@ -10,9 +10,10 @@ class MatakuliahController extends Controller
     {
         $daftarMatakuliah = [
             ['kode' => 'TK245002', 'nama' => 'Sistem Mikocok', 'sks' => 2 ],
-            ['kode' => 'TK245003', 'nama' => 'Elektro Yoga', 'sks' => 2 ],
+            ['kode' => 'TK245003', 'nama' => 'Elektro Yoga', 'sks' => 3 ],
             ['kode' => 'TK245004', 'nama' => 'Sistem Kendali Muani', 'sks' => 2 ],
             ['kode' => 'TK245005', 'nama' => 'Internet of Thingtong', 'sks' => 3 ],
+            ['kode' => 'TK245006', 'nama' => 'Sistem Manual', 'sks' => 3 ],
         ];
 
         $kataKunci = request()->query('q', '');
@@ -40,6 +41,4 @@ class MatakuliahController extends Controller
             'path' => $request->path(),
         ]);
     }
-
-
 }
