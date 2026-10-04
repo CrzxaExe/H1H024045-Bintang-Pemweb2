@@ -9,6 +9,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/login', function () {
+    return response()->json([
+        'sukses' => false,
+        'pesan' => 'Silakan login terlebih dahulu',
+    ], 401);
+})->name('login');
+
 Route::get('/salam', function () {
     return 'Selamat datang di Pemrograman Web II';
 });

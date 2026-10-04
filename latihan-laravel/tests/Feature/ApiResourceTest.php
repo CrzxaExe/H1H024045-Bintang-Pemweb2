@@ -5,7 +5,9 @@ namespace Tests\Feature;
 use App\Models\Mahasiswa;
 use App\Models\Matakuliah;
 use App\Models\ProgramStudi;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class ApiResourceTest extends TestCase
@@ -90,4 +92,39 @@ class ApiResourceTest extends TestCase
         $deleteResponse->assertOk()
             ->assertJsonPath('sukses', true);
     }
+
+    public function test_user_can_change_password_and_login_updates_last_login(): void
+    {
+        $user = User::factory()->create([
+            'email' => 'andi@example.com',
+            'password' => Hash::make('Password123'),
+            'peran' => 'mahasiswa',
+        ]);
+
+        $loginResponse = $this->postJson('/api/auth/login', [
+            'email' => 'andi@example.com',
+            'password' => 'Password123',
+        ]);
+
+        $loginResponse->assertOk()
+            ->assertJsonPath('sukses', true);
+
+        $user->refresh();
+        $this->assertNotNull($user->last_login);
+
+        $token = $user->createToken('token-saya', ['mahasiswa:baca'])->plainTextToken;
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->putJson('/api/auth/password', [
+            'old_password' => 'Password123',
+            'password' => 'Password456',
+            'password_confirmation' => 'Password456',
+        ]);
+
+        $response->assertOk()
+            ->assertJsonPath('sukses', true);
+        $this->assertTrue(Hash::check('Password456', $user->fresh()->password));
+    }
+
 }
