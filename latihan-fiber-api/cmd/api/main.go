@@ -19,6 +19,9 @@ func main() {
 		AppName:      konf.NamaAplikasi,
 		ErrorHandler: penanganGalat,
 	})
+	config.HubungkanBasisData(konf)
+	config.Migrasi()
+	config.DataAwal()
 	app.Use(requestid.New())
 	app.Use(logger.New())
 	app.Use(recoverer.New())

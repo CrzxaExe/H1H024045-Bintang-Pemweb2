@@ -19,5 +19,21 @@ func Daftarkan(app *fiber.App, apiKey string) {
 	mahasiswa.Use(middleware.KunciApi(apiKey))
 	mahasiswa.Get("/", handler.DaftarMahasiswa)
 	mahasiswa.Get("/nim/:nim", handler.DetailMahasiswaNIM)
+	mahasiswa.Post("/", handler.BuatMahasiswa)
 	mahasiswa.Get("/:id", handler.DetailMahasiswa)
+	mahasiswa.Put("/:id", handler.PerbaruiMahasiswa)
+	mahasiswa.Delete("/:id", handler.HapusMahasiswa)
+	mahasiswa.Post("/:id/pulihkan", handler.PulihkanMahasiswa)
+
+	programStudi := api.Group("/program-studi")
+	programStudi.Use(middleware.KunciApi(apiKey))
+	programStudi.Get("/", handler.DaftarProgramStudi)
+
+	matakuliah := api.Group("/matakuliah")
+	matakuliah.Use(middleware.KunciApi(apiKey))
+	matakuliah.Get("/", handler.DaftarMatakuliah)
+	matakuliah.Post("/", handler.BuatMatakuliah)
+	matakuliah.Get("/:id", handler.DetailMatakuliah)
+	matakuliah.Put("/:id", handler.PerbaruiMatakuliah)
+	matakuliah.Delete("/:id", handler.HapusMatakuliah)
 }
